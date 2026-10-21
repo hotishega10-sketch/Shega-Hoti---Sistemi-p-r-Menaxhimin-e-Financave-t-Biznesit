@@ -1,97 +1,93 @@
-# Sistemi për Menaxhimin e Porosive Online (E-Commerce)
+# 💰 Sistemi për Menaxhimin e Financave të Biznesit
 
-**Projekti:** Raporti Teknik 1 – Analiza, Kërkesat dhe Dizajni Teknik[cite: 2, 4]  
-**Lënda:** Projekt (Praktikë Profesionale) – Semestri V[cite: 1]  
-**Fakulteti:** Fakulteti i Shkencave Kompjuterike – Dizajn Softueri[cite: 1]  
-**Universiteti:** Universiteti "Ukshin Hoti" Prizren[cite: 1]  
-**Studentja:** Genta Olloni  
-**Profesori:** Prof. Ass. Dr. Endrit Fetahi[cite: 1]  
-
----
-
-## Përshkrimi i Projektit
-
-Ideja është të bëhet një sistem për menaxhimin e porosive online, në mënyrë që klientët të shohin produktet dhe të bëjnë porosi më lehtë, ndërsa administratori t'i menaxhojë produktet dhe porositë në një vend të vetëm, pa gabime dhe pa porosi të humbura.
+**Projekti:** Raporti Teknik 1 – Analiza, Kërkesat dhe Dizajni Teknik  
+**Lënda:** Projekt (Praktikë Profesionale) – Semestri V  
+**Fakulteti:** Fakulteti i Shkencave Kompjuterike – Dizajn Softueri  
+**Universiteti:** Universiteti "Ukshin Hoti" Prizren  
+**Studentja:** Shega Hoti  
+**Profesori:** Prof. Ass. Dr. Endrit Fetahi  
 
 ---
 
-## Kërkesat e Sistemit
+## 📝 Përshkrimi i Projektit
 
-- Sistemi duhet të lejojë qasjen e klientëve dhe të administratorit
-- Klienti mund të regjistrohet dhe të hyjë me email dhe fjalëkalim
-- Klienti mund t'i shohë produktet dhe t'i kërkojë ose filtrojë sipas kategorisë dhe çmimit
-- Klienti mund të shohë detajet e produktit (përshkrimi, çmimi dhe sa copë ka në stok)
-- Klienti mund të shtojë produkte në shportë, t'i heqë ato ose t'ia ndryshojë sasinë
-- Klienti mund ta bëjë porosinë duke shkruar adresën e dërgesës, ku pagesa bëhet kur e merr porosinë
-- Klienti mund ta shohë historikun e porosive dhe në çfarë statusi janë
-- Klienti mund ta anulojë porosinë vetëm derisa ajo nuk është konfirmuar ende nga admini
-- Administratori mund të shtojë, ndryshojë dhe fshijë produkte dhe kategori
-- Administratori mund t'i shohë të gjitha porositë dhe ta ndryshojë statusin e tyre (në pritje, konfirmuar, dërguar, dorëzuar ose anuluar)
-- Kur bëhet një porosi, stoku i produktit zvogëlohet vetë, dhe nëse nuk ka mjaftueshëm produkte porosia nuk pranohet
-- Në website duhet të konfirmohet regjistrimi, pra autentifikim
-- Fjalëkalimet duhet të ruhen me hash (të fshehura, jo si tekst i lexueshëm)[cite: 5, 17]
-- Çdo përdorues, produkt dhe porosi duhet të ketë ID të veçantë
-- Website duhet të jetë responsiv për çdo lloj ekrani[cite: 5]
-- Duhet të jetë i lehtë për t'u kuptuar dhe për t'u përdorur
-- Secili rol (klient ose administrator) duhet të bëjë vetëm funksionet e veta
+Sistemi është i menduar për bizneset e vogla që shpesh ndjekin shpenzimet apo faturat e tyre në Excel ose letër, gjë që mund të rezultojë në gabime dhe humbje të dhënash të gjendjes financiare. Ky sistem ofron një vend të vetëm ku bizneset mund të regjistrojnë transaksionet, të krijojnë fatura dhe të shohin gjendjen financiare.
 
 ---
 
-## Teknikat dhe Arkitektura
+## 👥 Përdoruesit dhe Rolet
 
-### Frontend
-- **HTML, CSS, JavaScript, Bootstrap**
-- Faqet e klientit dhe të administratorit, dizajn responsiv
+- **Pronari i biznesit:** Ka qasje të plotë në të gjitha modulet e sistemit, regjistrimin e përdoruesve dhe raportet financiare.
+- **Kontabilisti:** Regjistron dhe shikon transaksione dhe fatura.
+- **Punonjësi:** Mund të regjistrojë vetëm shpenzime dhe të shohë transaksionet e veta, por nuk mund të fshijë transaksione.
 
-### Backend
-- **PHP (me XAMPP):** hyrja dhe regjistrimi, rolet, produktet, shporta dhe porositë
+---
 
-### Database
-- **MySQL:** përdoruesit, produktet, kategoritë, shporta, porositë dhe pagesat
+## 🎯 Kërkesat e Sistemit
 
-### Modeli fillestar i databazës
+### Kërkesat Funksionale (KF)
+- **KF1:** Përdoruesi mund të regjistrohet me email dhe fjalëkalim. Pronari mund të regjistrojë kontabilistin dhe punonjësit (çdo regjistrim i pavarur krijohet si një llogari pronari).
+- **KF2:** Përdoruesi mund të hyjë me email dhe fjalëkalim.
+- **KF3:** Kontabilisti mund të regjistrojë një transaksion me shumën, tipin (e hyrë ose shpenzim), kategorinë dhe datën. Punonjësi mund të regjistrojë vetëm shpenzime.
+- **KF4:** Pronari dhe kontabilisti mund të krijojnë një faturë për një klient me totalin e shënuar.
+- **KF5:** Fatura ka statusin e vet (`e_papaguar`, `e_paguar`, `e_vonuar`) dhe automatikisht kalon në `e_vonuar` kur data e afatit kalon dhe fatura ende nuk është paguar.
+- **KF6:** Në dashboard paraqiten të hyrat, shpenzimet dhe fitimi neto për periudhën e zgjedhur.
+- **KF7:** Raportet mund të filtrohen sipas periudhës dhe kategorisë, si dhe të eksportohen në PDF.
+
+### Kërkesat Jofunksionale (KJ)
+- **KJ1:** Fjalëkalimet ruhen vetëm si hash (`bcrypt`).
+- **KJ2:** Endpoint-et private kërkojnë autentikim me JWT dhe autorizimi sipas rolit kryhet në backend.
+- **KJ3:** Shumat monetare ruhen si `DECIMAL`, jo `FLOAT`.
+- **KJ4:** Inputi validohet në backend dhe gabimet kthehen në format JSON.
+- **KJ5:** Funksionet kryesore janë të përdorshme edhe në ekran mobil (dizajn responsiv).
+
+---
+
+## ⛔ Jashtë Scope-it (Për këtë semestër)
+
+1. TVSH dhe taksat.
+2. Bilanc i plotë kontabël.
+3. Integrim me banka.
+4. Njoftime me email.
+5. Aplikacion i veçantë mobil (Nativ).
+
+---
+
+## 🛠️ Teknologjitë dhe Arkitektura
+
+- **Frontend:** React.js, JavaScript (Struktura të lehta kodi dhe të ripërdorshme).
+- **Backend:** Node.js (Express) (Përputhje me JS të frontend-it, i përshtatshëm për REST API).
+- **Databaza:** MySQL (Për garantimin e constraints dhe foreign keys për të dhënat financiare).
+- **Autentikimi:** JWT (JSON Web Token) & `bcrypt` (Ruajtje e sigurt e fjalëkalimeve).
+- **Komunikimi:** REST API (HTTPS + JSON).
+
+---
+
+## 🗄️ Modeli Fillestar i Databazës (Entitetet Kryesore)
 
 | Tabela | Për çfarë shërben |
 |---|---|
-| `users` | Llogaritë, email-i, password hash dhe roli (klient ose administrator) |
-| `addresses` | Adresat e dërgesës të klientit |
-| `categories` | Kategoritë e produkteve |
-| `products` | Produktet me çmim, stok dhe kategori |
-| `cart_items` | Produktet që klienti i ka në shportë |
-| `orders` | Porositë me klientin, adresën, statusin dhe totalin |
-| `order_items` | Produktet brenda një porosie, me sasinë dhe çmimin |
-| `payments` | Pagesa e secilës porosi |
-
-**Lidhjet kryesore midis tabelave:**
-- Një përdorues mund të ketë shumë porosi
-- Një kategori ka shumë produkte
-- Një porosi ka shumë produkte brenda (tabela `order_items`)
-- Një porosi ka një pagesë
-
-### Arkitektura
-Sistemi ndahet në tri pjesë: frontend (çfarë e shohin përdoruesit), backend (PHP, që i përpunon kërkesat) dhe database (MySQL, ku ruhen të dhënat).
-
-**Modulet:** Përdoruesit, produktet, shporta, porositë, pagesat, administrimi.
+| `businesses` | Identifikuesi i biznesit dhe emri i tij |
+| `users` | Llogaritë e përdoruesve, email, password_hash, roli dhe `business_id` |
+| `categories` | Kategoritë e transaksioneve (të hyra ose shpenzime) |
+| `transactions` | Transaksionet me shumën, tipin, datën, përdoruesin dhe kategorinë |
+| `invoices` | Faturat me klientin, totalin, statusin dhe datën e afatit |
 
 ---
 
-## Plan pune
+## 📅 Plan pune (Deri te Raporti 2)
 
-sugjerimi: kërkesat -> dizajnimi -> implementimi -> testimi
+### Databaza
+- Skema MySQL e krijuar me PK, FK dhe constraints.
+- Të dhëna testuese për secilën tabelë.
 
-| Faza | Aktivitetet kryesore | Rezultati i pritshëm |
-|---|---|---|
-| Analiza e kërkesave | Përcaktimi i funksioneve dhe roleve të sistemit | Lista e kërkesave |
-| Dizajnimi | Arkitektura dhe modeli i databazës | Dizajni i sistemit |
-| Krijimi i databazës | Krijimi i tabelave dhe lidhjeve në MySQL | Databaza e gatshme |
-| Backend-i | Hyrja, regjistrimi, produktet, shporta dhe porositë në PHP | Pjesa e serverit funksionale |
-| Frontend-i | Faqet për klientin dhe administratorin | Ndërfaqe responsive |
-| Testimi | Provimi i funksioneve dhe rregullimi i gabimeve | Version i testuar |
+### Backend (Node.js + Express)
+- Struktura e projektit (`routes`, `controllers`, `services`).
+- Autentikimi: `POST /api/auth/register` dhe `POST /api/auth/login` (`bcrypt` + JWT).
+- Middleware për verifikimin e token-it dhe kontrollin e rolit.
+- CRUD për transaksionet (`/api/transactions`) dhe leximi i kategorive (`/api/categories`).
+- Validimi dhe trajtimi i gabimeve (400, 401, 403, 404) në format JSON.
 
-### Orari i propozuar
-
-- **Java 1:** analiza e kërkesave, dizajni dhe databaza
-- **Java 2-3:** backend-i (hyrja, produktet, shporta, porositë)
-- **Java 4-5:** frontend-i dhe lidhja me backend-in
-- **Java 6-7:** testimi dhe rregullimi i gabimeve
-- **Java 8:** finalizimi
+### Testimi dhe Demonstrimi
+- Thirrje reale të endpoint-eve me Postman.
+- Git history me commit-e të qarta (`feat:`, `fix:`).
