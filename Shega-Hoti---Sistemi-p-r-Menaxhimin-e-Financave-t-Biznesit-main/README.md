@@ -1,1 +1,0 @@
-# Shega-Hoti---Sistemi-p-r-Menaxhimin-e-Financave-t-Biznesit
