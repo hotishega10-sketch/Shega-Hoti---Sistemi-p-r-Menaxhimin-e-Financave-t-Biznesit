@@ -1,93 +1,89 @@
-# 💰 Sistemi për Menaxhimin e Financave të Biznesit
+# Sistemi per Menaxhimin e Financave te Biznesit
 
-**Projekti:** Raporti Teknik 1 – Analiza, Kërkesat dhe Dizajni Teknik  
-**Lënda:** Projekt (Praktikë Profesionale) – Semestri V  
-**Fakulteti:** Fakulteti i Shkencave Kompjuterike – Dizajn Softueri  
-**Universiteti:** Universiteti "Ukshin Hoti" Prizren  
-**Studentja:** Shega Hoti  
-**Profesori:** Prof. Ass. Dr. Endrit Fetahi  
+Projekt individual ne lenden **Projekt (Praktike Profesionale)**, Semestri V, viti akademik 2026/2027.
+Fakulteti i Shkencave Kompjuterike, Universiteti "Ukshin Hoti" Prizren.
 
----
+## Pershkrimi
 
-## 📝 Përshkrimi i Projektit
+Bizneset e vogla shpesh i ndjekin shpenzimet dhe faturat ne Excel ose ne leter, gje qe sjell gabime dhe humbje te dhenash.
+Ky sistem ofron nje vend te vetem ku bizneset regjistrojne transaksionet, krijojne fatura dhe shohin gjendjen financiare.
 
-Sistemi është i menduar për bizneset e vogla që shpesh ndjekin shpenzimet apo faturat e tyre në Excel ose letër, gjë që mund të rezultojë në gabime dhe humbje të dhënash të gjendjes financiare. Ky sistem ofron një vend të vetëm ku bizneset mund të regjistrojnë transaksionet, të krijojnë fatura dhe të shohin gjendjen financiare.
+## Perdoruesit
 
----
+- **Pronari i biznesit**: qasje e plote; krijon kontabiliste dhe punonjes
+- **Kontabilisti**: regjistron dhe shikon transaksione dhe fatura
+- **Punonjesi**: regjistron shpenzime dhe shikon transaksionet e veta, por nuk mund te fshije transaksione
 
-## 👥 Përdoruesit dhe Rolet
+## Teknologjite
 
-- **Pronari i biznesit:** Ka qasje të plotë në të gjitha modulet e sistemit, regjistrimin e përdoruesve dhe raportet financiare.
-- **Kontabilisti:** Regjistron dhe shikon transaksione dhe fatura.
-- **Punonjësi:** Mund të regjistrojë vetëm shpenzime dhe të shohë transaksionet e veta, por nuk mund të fshijë transaksione.
-
----
-
-## 🎯 Kërkesat e Sistemit
-
-### Kërkesat Funksionale (KF)
-- **KF1:** Përdoruesi mund të regjistrohet me email dhe fjalëkalim. Pronari mund të regjistrojë kontabilistin dhe punonjësit (çdo regjistrim i pavarur krijohet si një llogari pronari).
-- **KF2:** Përdoruesi mund të hyjë me email dhe fjalëkalim.
-- **KF3:** Kontabilisti mund të regjistrojë një transaksion me shumën, tipin (e hyrë ose shpenzim), kategorinë dhe datën. Punonjësi mund të regjistrojë vetëm shpenzime.
-- **KF4:** Pronari dhe kontabilisti mund të krijojnë një faturë për një klient me totalin e shënuar.
-- **KF5:** Fatura ka statusin e vet (`e_papaguar`, `e_paguar`, `e_vonuar`) dhe automatikisht kalon në `e_vonuar` kur data e afatit kalon dhe fatura ende nuk është paguar.
-- **KF6:** Në dashboard paraqiten të hyrat, shpenzimet dhe fitimi neto për periudhën e zgjedhur.
-- **KF7:** Raportet mund të filtrohen sipas periudhës dhe kategorisë, si dhe të eksportohen në PDF.
-
-### Kërkesat Jofunksionale (KJ)
-- **KJ1:** Fjalëkalimet ruhen vetëm si hash (`bcrypt`).
-- **KJ2:** Endpoint-et private kërkojnë autentikim me JWT dhe autorizimi sipas rolit kryhet në backend.
-- **KJ3:** Shumat monetare ruhen si `DECIMAL`, jo `FLOAT`.
-- **KJ4:** Inputi validohet në backend dhe gabimet kthehen në format JSON.
-- **KJ5:** Funksionet kryesore janë të përdorshme edhe në ekran mobil (dizajn responsiv).
-
----
-
-## ⛔ Jashtë Scope-it (Për këtë semestër)
-
-1. TVSH dhe taksat.
-2. Bilanc i plotë kontabël.
-3. Integrim me banka.
-4. Njoftime me email.
-5. Aplikacion i veçantë mobil (Nativ).
-
----
-
-## 🛠️ Teknologjitë dhe Arkitektura
-
-- **Frontend:** React.js, JavaScript (Struktura të lehta kodi dhe të ripërdorshme).
-- **Backend:** Node.js (Express) (Përputhje me JS të frontend-it, i përshtatshëm për REST API).
-- **Databaza:** MySQL (Për garantimin e constraints dhe foreign keys për të dhënat financiare).
-- **Autentikimi:** JWT (JSON Web Token) & `bcrypt` (Ruajtje e sigurt e fjalëkalimeve).
-- **Komunikimi:** REST API (HTTPS + JSON).
-
----
-
-## 🗄️ Modeli Fillestar i Databazës (Entitetet Kryesore)
-
-| Tabela | Për çfarë shërben |
+| Shtresa | Teknologjia |
 |---|---|
-| `businesses` | Identifikuesi i biznesit dhe emri i tij |
-| `users` | Llogaritë e përdoruesve, email, password_hash, roli dhe `business_id` |
-| `categories` | Kategoritë e transaksioneve (të hyra ose shpenzime) |
-| `transactions` | Transaksionet me shumën, tipin, datën, përdoruesin dhe kategorinë |
-| `invoices` | Faturat me klientin, totalin, statusin dhe datën e afatit |
+| Frontend | JavaScript, React.js |
+| Backend | Node.js (Express), REST API (JSON) |
+| Databaza | MySQL |
+| Autentikimi | JWT, bcrypt |
+| Testimi i API-t | Postman |
 
----
+## Struktura e projektit
 
-## 📅 Plan pune (Deri te Raporti 2)
+```
+.
+├── backend/
+│   ├── server.js, app.js      # nisja e serverit dhe konfigurimi i Express
+│   ├── config/                # lidhja me MySQL, konstantet
+│   ├── routes/                # adresat e API-t
+│   ├── middleware/            # verifyToken, checkRole, trajtimi i gabimeve
+│   ├── controllers/           # logjika e endpoint-eve dhe query-t SQL
+│   ├── utils/                 # validimi i inputit, AppError
+│   ├── database/              # schema.sql dhe seed.js (te dhena testuese)
+│   └── docs/                  # koleksioni i Postman
+├── frontend/                  # React.js
+├── docs/                      # raportet dhe diagramet
+└── README.md
+```
 
-### Databaza
-- Skema MySQL e krijuar me PK, FK dhe constraints.
-- Të dhëna testuese për secilën tabelë.
+## Si ekzekutohet backend-i
 
-### Backend (Node.js + Express)
-- Struktura e projektit (`routes`, `controllers`, `services`).
-- Autentikimi: `POST /api/auth/register` dhe `POST /api/auth/login` (`bcrypt` + JWT).
-- Middleware për verifikimin e token-it dhe kontrollin e rolit.
-- CRUD për transaksionet (`/api/transactions`) dhe leximi i kategorive (`/api/categories`).
-- Validimi dhe trajtimi i gabimeve (400, 401, 403, 404) në format JSON.
+Nevojitet Node.js dhe MySQL (p.sh. XAMPP).
 
-### Testimi dhe Demonstrimi
-- Thirrje reale të endpoint-eve me Postman.
-- Git history me commit-e të qarta (`feat:`, `fix:`).
+1. Krijo databazen `financa_db` ne MySQL (phpMyAdmin) dhe ekzekuto `backend/database/schema.sql`.
+2. Ne folderin `backend/`:
+   ```
+   npm install
+   ```
+3. Kopjo `.env.example` ne `.env` dhe vendos vlerat e tua (`DB_PASS`, `JWT_SECRET` me nje vlere te rastesishme e te gjate). Skedari `.env` nuk ngarkohet ne GitHub.
+4. Shto te dhenat testuese:
+   ```
+   npm run seed
+   ```
+5. Nise serverin:
+   ```
+   npm run dev
+   ```
+   Serveri punon ne `http://localhost:5000`. Kontrolli: `GET /api/health`.
+
+Llogarite demo (pas `npm run seed`), fjalekalimi `Demo1234!`: `pronar@demo.com`, `kontabilist@demo.com`, `punjonjes@demo.com`.
+
+## Endpoint-et (permbledhje)
+
+| Metoda | Rruga | Qasja |
+|---|---|---|
+| POST | `/api/auth/register` | publik (krijon biznes dhe pronar) |
+| POST | `/api/auth/login` | publik |
+| GET | `/api/auth/me` | i kycur |
+| GET, POST | `/api/users` | pronar |
+| GET, POST | `/api/categories` | GET: te gjithe; POST: pronar, kontabilist |
+| GET | `/api/transactions`, `/api/transactions/summary`, `/api/transactions/:id` | te gjithe (punonjesi vetem te vetat) |
+| POST | `/api/transactions` | te gjithe (punonjesi vetem shpenzime) |
+| PATCH | `/api/transactions/:id` | pronar, kontabilist |
+| DELETE | `/api/transactions/:id` | pronar |
+
+Pjesa tjeter e kerkesave (`Authorization: Bearer <token>`), kodet e pergjigjes dhe shembujt jane ne raportin ne `docs/`.
+Koleksioni per testim: `backend/docs/finance-api.postman_collection.json` (importohet ne Postman).
+
+## Statusi
+
+- [x] Raporti 1: analiza, kerkesat, arkitektura, ER diagrami
+- [x] Raporti 2: databaza, backend-i dhe API (autentikim, role, kategori, transaksione)
+- [ ] Raporti 3: faturat, klientet, dashboard-i dhe frontend-i
+- [ ] Raporti 4: testimi, siguria dhe deployment
