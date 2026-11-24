@@ -51,7 +51,7 @@ exports.list = async (req, res) => {
   res.json({ success: true, data: rows });
 };
 
-kthen nje fature me artikujt
+//kthen nje fature me artikujt
 exports.getOne = async (req, res) => {
   res.json({ success: true, data: await findOne(req.user.business_id, parseId(req.params.id)) });
 };
