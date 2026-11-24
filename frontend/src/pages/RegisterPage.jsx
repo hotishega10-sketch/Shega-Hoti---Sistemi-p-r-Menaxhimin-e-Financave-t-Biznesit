@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import * as authService from '../services/authService';
 import { Field, FormError } from '../components/ui';
 import { validateEmail, validatePassword, required } from '../utils/validate';
+import { WELCOME_QUOTES, pick } from '../utils/quotes';
 
 export default function RegisterPage() {
   const { login } = useAuth();
@@ -12,6 +13,7 @@ export default function RegisterPage() {
   const [formError, setFormError] = useState('');
   const [busy, setBusy] = useState(false);
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const [welcome] = useState(() => pick(WELCOME_QUOTES));
 
   async function submit(e) {
     e.preventDefault();
@@ -35,6 +37,7 @@ export default function RegisterPage() {
   return (
     <div className="auth-wrap">
       <form className="card auth" onSubmit={submit} noValidate>
+        <blockquote className="quote welcome">{welcome}</blockquote>
         <h1>Regjistro biznesin</h1>
         <p className="muted">Do të bëhesh pronar i biznesit të ri.</p>
         <FormError error={formError} />

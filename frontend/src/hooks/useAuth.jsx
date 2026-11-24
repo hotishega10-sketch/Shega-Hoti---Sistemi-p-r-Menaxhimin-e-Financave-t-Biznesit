@@ -3,6 +3,7 @@ import * as authService from '../services/authService';
 import { tokenStore } from '../services/api';
 
 const AuthContext = createContext(null);
+export const BYE_KEY = 'financa_bye';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -26,7 +27,11 @@ export function AuthProvider({ children }) {
     setUser(await authService.me());
   }, []);
 
-  const logout = useCallback(() => { authService.logout(); setUser(null); }, []);
+  const logout = useCallback(() => {
+    authService.logout();
+    try { sessionStorage.setItem(BYE_KEY, '1'); } catch { /* nuk ka rëndësi */ }
+    setUser(null);
+  }, []);
 
   const role = user && user.role;
   const value = {

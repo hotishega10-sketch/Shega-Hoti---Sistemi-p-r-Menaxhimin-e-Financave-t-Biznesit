@@ -8,13 +8,15 @@ import DashboardPage from '../pages/DashboardPage';
 import TransactionsPage from '../pages/TransactionsPage';
 import ClientsPage from '../pages/ClientsPage';
 import InvoicesPage from '../pages/InvoicesPage';
+import UsersPage from '../pages/UsersPage';
 
 // Faqe të mbrojtura: pa përdorues te login; me rol të gabuar te kryefaqja.
 function Protected({ roles, children }) {
-  const { user, loading, canManage } = useAuth();
+  const { user, loading, canManage, isOwner } = useAuth();
   if (loading) return <Loading />;
   if (!user) return <Navigate to="/hyrja" replace />;
   if (roles === 'manage' && !canManage) return <Navigate to="/" replace />;
+  if (roles === 'owner' && !isOwner) return <Navigate to="/" replace />;
   return children;
 }
 
@@ -34,6 +36,7 @@ export default function AppRoutes() {
         <Route path="transaksionet" element={<TransactionsPage />} />
         <Route path="klientet" element={<Protected roles="manage"><ClientsPage /></Protected>} />
         <Route path="faturat" element={<Protected roles="manage"><InvoicesPage /></Protected>} />
+        <Route path="perdoruesit" element={<Protected roles="owner"><UsersPage /></Protected>} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

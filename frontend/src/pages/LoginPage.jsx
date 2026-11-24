@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Field, FormError } from '../components/ui';
 import { validateEmail, required } from '../utils/validate';
+import { FUNNY_QUOTES, GOODBYE_MESSAGE, pick } from '../utils/quotes';
+import { BYE_KEY } from '../hooks/useAuth';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -11,6 +13,10 @@ export default function LoginPage() {
   const [formError, setFormError] = useState('');
   const [busy, setBusy] = useState(false);
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const [quote] = useState(() => pick(FUNNY_QUOTES));
+  // Mesazhi i lamtumirës shfaqet vetëm pas daljes (Dil), jo kur skadon sesioni.
+  const [justLoggedOut] = useState(() => sessionStorage.getItem(BYE_KEY) === '1');
+  useEffect(() => { sessionStorage.removeItem(BYE_KEY); }, []);
 
   // Rrjedha: forma → validim lokal → POST /auth/login → token → /auth/me → ridrejtim
   async function submit(e) {
@@ -27,6 +33,7 @@ export default function LoginPage() {
   return (
     <div className="auth-wrap">
       <form className="card auth" onSubmit={submit} noValidate>
+        {justLoggedOut && <div className="notice success">{GOODBYE_MESSAGE}</div>}
         <h1>Hyr në Financa</h1>
         <p className="muted">Menaxho të hyrat, shpenzimet dhe faturat e biznesit.</p>
         <FormError error={formError} />
@@ -39,6 +46,7 @@ export default function LoginPage() {
         <button className="btn primary" disabled={busy}>{busy ? 'Duke hyrë...' : 'Hyr'}</button>
         <p className="muted center">Biznes i ri? <Link to="/regjistrimi">Regjistrohu</Link></p>
         <p className="hint">Demo: pronar@demo.com / Demo1234!</p>
+        <blockquote className="quote">“{quote}”</blockquote>
       </form>
     </div>
   );

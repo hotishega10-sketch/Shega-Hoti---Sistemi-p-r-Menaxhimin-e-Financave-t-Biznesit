@@ -29,3 +29,8 @@ export const invoiceService = {
   pay: (id) => api(`/invoices/${id}/pay`, { method: 'PATCH' }).then((r) => r.data),
   remove: (id) => api(`/invoices/${id}`, { method: 'DELETE' }),
 };
+
+export const userService = {
+  list: () => api('/users').then((r) => r.data),
+  create: (body) => api('/users', { method: 'POST', body }).then((r) => r.user),
+};
